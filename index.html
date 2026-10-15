@@ -43,7 +43,7 @@ textarea{ min-height:110px; } /* Alto de nombres */
 <p class="nota" id="nota"></p><!-- Ayuda según referencia -->
 <div id="fColor"><!-- Solo Lejos pero Unidos -->
 <label for="color">Color</label><!-- Etiqueta -->
-<select id="color"><option>Blanca (sin mezclar)</option><option>Pastel (colores mezclados)</option></select><!-- Colores -->
+<select id="color"></select><!-- Colores (se llenan según la referencia) -->
 </div>
 <div id="fSimbolo"><!-- Solo Lejos pero Unidos -->
 <label for="simbolo">Símbolo</label><!-- Etiqueta -->
@@ -66,9 +66,10 @@ textarea{ min-height:110px; } /* Alto de nombres */
 <p><span>Total</span><strong id="total"></strong></p><!-- Total -->
 <p id="pAnt"><span>Anticipo para iniciar</span><strong id="anticipo"></strong></p><!-- Anticipo -->
 </div>
-<div class="total" id="pago" hidden><!-- Cuadro de pago del anticipo -->
-<p>Paga el anticipo con llave de Nu:</p><!-- Instrucción -->
+<div class="total" id="pago"><!-- Cuadro de pago (siempre visible) -->
+<p>Paga con llave de Nu:</p><!-- Instrucción -->
 <p><strong id="llave"></strong><button class="btn sec" id="copiar" type="button">Copiar</button></p><!-- Llave y botón copiar -->
+<p class="nota" id="avisoAnt"></p><!-- Aviso de anticipo obligatorio (solo Velas con nombre) -->
 <p class="nota">Después de enviar el pedido, adjunta el comprobante en WhatsApp.</p><!-- Recordatorio -->
 </div>
 <button class="btn" id="enviar" type="button">Enviar pedido por WhatsApp</button><!-- Guarda y abre WhatsApp -->
@@ -87,11 +88,11 @@ const firebaseConfig = { // Datos de tu proyecto (no son contraseñas)
 }; // Fin de la configuración
 const db = getFirestore(initializeApp(firebaseConfig)); // Conecta con Firestore
 const TEL = '573118010037'; // WhatsApp del negocio con indicativo de Colombia
-const LLAVE = '@YGS336'; // Llave de Nu para el anticipo (cámbiala por la tuya)
+const LLAVE = 'PEGA_AQUI_TU_LLAVE_NU'; // Llave de Nu para el anticipo (cámbiala por la tuya)
 const REF = { // Datos de cada referencia
-  unidos: { n: 'Lejos pero Unidos', p: 17000, ant: 0, nota: 'Las frases vienen fijas, no se modifican. Vinilo dorado. Tarjeta incluida.' }, // Referencia 1
-  nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
-  deseos: { n: 'Deseos y Propósitos', p: 15000, ant: 0, nota: 'Una vela por deseo: Amor, Trabajo, Familia, Abundancia, Alegría, Sabiduría, Paz, Sueños, Fe y Prosperidad. Pastel.' } // Referencia 3
+  unidos: { n: 'Lejos pero Unidos', p: 17000, ant: 0, colores: ['Blanca (sin mezclar)', 'Pastel (colores mezclados)'], nota: 'Las frases vienen fijas, no se modifican. Vinilo dorado. Tarjeta incluida.' }, // Referencia 1
+  nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, colores: ['Pastel (colores mezclados)'], nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
+  deseos: { n: 'Deseos y Propósitos', p: 15000, ant: 0, colores: ['Pastel (colores mezclados)', 'Roja'], nota: 'Una vela por deseo: Amor, Trabajo, Familia, Abundancia, Alegría, Sabiduría, Paz, Sueños, Fe y Prosperidad. En pastel o roja; las rojas solo con vinilo dorado.' } // Referencia 3
 };
 const $ = id => document.getElementById(id); // Atajo para buscar por id
 const peso = n => '$' + n.toLocaleString('es-CO'); // Formato de pesos
@@ -100,13 +101,15 @@ const lineasNombres = () => $('nombres').value.split('\n').map(s => s.trim()).fi
 function actualizar() { // Ajusta el formulario a la referencia
   const r = $('ref').value; // Referencia actual
   $('nota').textContent = REF[r].nota; // Muestra la ayuda
-  $('fColor').hidden = r !== 'unidos'; // Color solo en Lejos pero Unidos
+  $('fColor').hidden = r === 'nombre'; // Color visible salvo en Velas con nombre (siempre pastel)
+  if ($('color').dataset.ref !== r) { $('color').innerHTML = REF[r].colores.map(c => '<option>' + c + '</option>').join(''); $('color').dataset.ref = r; } // Llena los colores solo cuando cambia la referencia
   $('fSimbolo').hidden = r !== 'unidos'; // Símbolo solo en Lejos pero Unidos
-  $('fVinilo').hidden = r === 'unidos'; // Vinilo elegible en las otras
+  const roja = r === 'deseos' && $('color').value === 'Roja'; // Es una vela roja de Deseos
+  $('fVinilo').hidden = r === 'unidos' || roja; // Vinilo oculto en Lejos pero Unidos y en las rojas (siempre dorado)
   $('fNombres').hidden = r !== 'nombre'; // Nombres solo en Velas con nombre
   $('total').textContent = peso(REF[r].p * cajas()); // Total
   $('pAnt').hidden = REF[r].ant === 0; // Anticipo solo si aplica
-  $('pago').hidden = REF[r].ant === 0; // Cuadro de pago solo si aplica
+  $('avisoAnt').textContent = REF[r].ant ? 'Anticipo obligatorio de ' + peso(REF[r].ant) + ' para iniciar la producción de velas con nombre.' : ''; // Aviso solo en Velas con nombre
   $('anticipo').textContent = peso(REF[r].ant); // Valor del anticipo
   $('cuenta').textContent = lineasNombres().length + ' de ' + (cajas() * 10) + ' nombres'; // Contador
 }
@@ -114,9 +117,9 @@ function leer() { // Junta los datos del formulario
   const r = $('ref').value; // Referencia actual
   return { // Objeto del pedido
     cliente: $('cliente').value.trim(), ref: r, refNombre: REF[r].n, cajas: cajas(), // Datos generales
-    color: r === 'unidos' ? $('color').value : 'Pastel (colores mezclados)', // Color
+    color: r === 'nombre' ? 'Pastel (colores mezclados)' : $('color').value, // Color
     simbolo: r === 'unidos' ? $('simbolo').value : '', // Símbolo
-    vinilo: r === 'unidos' ? 'Dorado' : $('vinilo').value, // Vinilo
+    vinilo: (r === 'unidos' || (r === 'deseos' && $('color').value === 'Roja')) ? 'Dorado' : $('vinilo').value, // Vinilo (dorado fijo en Unidos y en velas rojas)
     nombres: r === 'nombre' ? lineasNombres() : [], // Lista de nombres
     ciudad: $('ciudad').value, total: REF[r].p * cajas(), ant: REF[r].ant, estado: 'Pendiente de pago' // Entrega, dinero y estado inicial
   };
@@ -127,7 +130,7 @@ function mensaje(p) { // Arma el texto de WhatsApp
   l.push('Vinilo: ' + p.vinilo); // Vinilo
   if (p.nombres.length) l.push('Nombres:', ...p.nombres.map((n, i) => (i + 1) + '. ' + n)); // Nombres numerados
   l.push('Entrega: ' + p.ciudad, 'Total: ' + peso(p.total)); // Entrega y total
-  if (p.ant) l.push('Anticipo: ' + peso(p.ant) + ' (adjunto el comprobante)'); // Anticipo si aplica
+  l.push(p.ant ? 'Anticipo obligatorio: ' + peso(p.ant) + ' (adjunto el comprobante)' : 'Adjunto el comprobante de pago'); // Pago
   return l.join('\n'); // Une todo
 }
 $('enviar').onclick = async () => { // Al tocar "Enviar"
@@ -135,13 +138,14 @@ $('enviar').onclick = async () => { // Al tocar "Enviar"
   if (!p.cliente) { alert('Escribe el nombre de quien pide.'); return; } // Falta el cliente
   if (p.ref === 'nombre' && !p.nombres.length) { alert('Escribe al menos un nombre.'); return; } // Faltan nombres
   $('enviar').disabled = true; // Evita doble envío
-  try { await addDoc(collection(db, 'pedidos'), { ...p, creado: serverTimestamp() }); } catch (e) { console.error(e); } // Guarda en Firestore (si falla, igual sigue a WhatsApp)
-  location.href = 'https://wa.me/' + TEL + '?text=' + encodeURIComponent(mensaje(p)); // Abre WhatsApp con el pedido
+  let guardado = true; // Marca si el pedido quedó en el sistema
+  try { await addDoc(collection(db, 'pedidos'), { ...p, creado: serverTimestamp() }); } catch (e) { guardado = false; console.error(e); } // Guarda en Firestore (si falla, igual sigue a WhatsApp)
+  location.href = 'https://wa.me/' + TEL + '?text=' + encodeURIComponent(mensaje(p) + (guardado ? '' : '\n(sin registro en el sistema)')); // Abre WhatsApp con el pedido (avisa si no se guardó)
   setTimeout(() => { $('enviar').disabled = false; }, 3000); // Reactiva el botón si el cliente vuelve
 };
 $('copiar').onclick = async () => { try { await navigator.clipboard.writeText(LLAVE); $('copiar').textContent = '¡Copiada!'; } catch (e) { alert(LLAVE); } }; // Copia la llave (o la muestra si no puede)
 $('llave').textContent = LLAVE; // Muestra la llave en pantalla
-['ref', 'cajas', 'nombres'].forEach(id => $(id).addEventListener('input', actualizar)); // Recalcula al cambiar datos
+['ref', 'color', 'cajas', 'nombres'].forEach(id => $(id).addEventListener('input', actualizar)); // Recalcula al cambiar datos
 actualizar(); // Primer cálculo al abrir
 </script>
 </body>
