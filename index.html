@@ -66,10 +66,9 @@ textarea{ min-height:110px; } /* Alto de nombres */
 <p><span>Total</span><strong id="total"></strong></p><!-- Total -->
 <p id="pAnt"><span>Anticipo para iniciar</span><strong id="anticipo"></strong></p><!-- Anticipo -->
 </div>
-<div class="total" id="pago"><!-- Cuadro de pago (siempre visible) -->
-<p>Paga con llave de Nu:</p><!-- Instrucción -->
+<div class="total" id="pago" hidden><!-- Cuadro de pago del anticipo -->
+<p>Paga el anticipo con llave de Nu:</p><!-- Instrucción -->
 <p><strong id="llave"></strong><button class="btn sec" id="copiar" type="button">Copiar</button></p><!-- Llave y botón copiar -->
-<p class="nota" id="avisoAnt"></p><!-- Aviso de anticipo obligatorio (solo Velas con nombre) -->
 <p class="nota">Después de enviar el pedido, adjunta el comprobante en WhatsApp.</p><!-- Recordatorio -->
 </div>
 <button class="btn" id="enviar" type="button">Enviar pedido por WhatsApp</button><!-- Guarda y abre WhatsApp -->
@@ -109,7 +108,7 @@ function actualizar() { // Ajusta el formulario a la referencia
   $('fNombres').hidden = r !== 'nombre'; // Nombres solo en Velas con nombre
   $('total').textContent = peso(REF[r].p * cajas()); // Total
   $('pAnt').hidden = REF[r].ant === 0; // Anticipo solo si aplica
-  $('avisoAnt').textContent = REF[r].ant ? 'Anticipo obligatorio de ' + peso(REF[r].ant) + ' para iniciar la producción de velas con nombre.' : ''; // Aviso solo en Velas con nombre
+  $('pago').hidden = REF[r].ant === 0; // Cuadro de pago solo si aplica
   $('anticipo').textContent = peso(REF[r].ant); // Valor del anticipo
   $('cuenta').textContent = lineasNombres().length + ' de ' + (cajas() * 10) + ' nombres'; // Contador
 }
@@ -130,7 +129,7 @@ function mensaje(p) { // Arma el texto de WhatsApp
   l.push('Vinilo: ' + p.vinilo); // Vinilo
   if (p.nombres.length) l.push('Nombres:', ...p.nombres.map((n, i) => (i + 1) + '. ' + n)); // Nombres numerados
   l.push('Entrega: ' + p.ciudad, 'Total: ' + peso(p.total)); // Entrega y total
-  l.push(p.ant ? 'Anticipo obligatorio: ' + peso(p.ant) + ' (adjunto el comprobante)' : 'Adjunto el comprobante de pago'); // Pago
+  if (p.ant) l.push('Anticipo: ' + peso(p.ant) + ' (adjunto el comprobante)'); // Anticipo si aplica
   return l.join('\n'); // Une todo
 }
 $('enviar').onclick = async () => { // Al tocar "Enviar"
@@ -138,9 +137,8 @@ $('enviar').onclick = async () => { // Al tocar "Enviar"
   if (!p.cliente) { alert('Escribe el nombre de quien pide.'); return; } // Falta el cliente
   if (p.ref === 'nombre' && !p.nombres.length) { alert('Escribe al menos un nombre.'); return; } // Faltan nombres
   $('enviar').disabled = true; // Evita doble envío
-  let guardado = true; // Marca si el pedido quedó en el sistema
-  try { await addDoc(collection(db, 'pedidos'), { ...p, creado: serverTimestamp() }); } catch (e) { guardado = false; console.error(e); } // Guarda en Firestore (si falla, igual sigue a WhatsApp)
-  location.href = 'https://wa.me/' + TEL + '?text=' + encodeURIComponent(mensaje(p) + (guardado ? '' : '\n(sin registro en el sistema)')); // Abre WhatsApp con el pedido (avisa si no se guardó)
+  try { await addDoc(collection(db, 'pedidos'), { ...p, creado: serverTimestamp() }); } catch (e) { console.error(e); } // Guarda en Firestore (si falla, igual sigue a WhatsApp)
+  location.href = 'https://wa.me/' + TEL + '?text=' + encodeURIComponent(mensaje(p)); // Abre WhatsApp con el pedido
   setTimeout(() => { $('enviar').disabled = false; }, 3000); // Reactiva el botón si el cliente vuelve
 };
 $('copiar').onclick = async () => { try { await navigator.clipboard.writeText(LLAVE); $('copiar').textContent = '¡Copiada!'; } catch (e) { alert(LLAVE); } }; // Copia la llave (o la muestra si no puede)
