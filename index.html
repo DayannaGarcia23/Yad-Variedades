@@ -1,59 +1,46 @@
 <!DOCTYPE html>
 <html lang="es"><!-- Documento en español -->
-<head><!-- Encabezado de la página -->
+<head><!-- Encabezado -->
 <meta charset="utf-8"><!-- Permite tildes y ñ -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><!-- Ajusta al celular -->
 <title>YAD Variedades · Pedidos</title><!-- Título de la pestaña -->
-<style><!-- Estilos (colores y formas) -->
-:root{ --verde:#2d4336; --crema:#faf8ec; --oro:#b8963e; --tinta:#33392f; --caja:#fff; --borde:#d9d4bd; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); } /* Colores base y márgenes seguros del celular */
-@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --crema:#1f2f26; --tinta:#efeadb; --caja:#2d4336; --borde:#4a604f; } } /* Colores en modo oscuro */
+<style><!-- Estilos -->
+:root{ --verde:#2d4336; --crema:#faf8ec; --oro:#b8963e; --tinta:#33392f; --caja:#fff; --borde:#d9d4bd; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); } /* Colores base y márgenes seguros */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --crema:#1f2f26; --tinta:#efeadb; --caja:#2d4336; --borde:#4a604f; } } /* Modo oscuro */
 :root[data-theme="dark"]{ --crema:#1f2f26; --tinta:#efeadb; --caja:#2d4336; --borde:#4a604f; } /* Modo oscuro forzado */
-html{ scroll-padding-top:env(safe-area-inset-top,0px); } /* Evita que el borde tape el contenido */
-body{ margin:0; background:var(--crema); color:var(--tinta); font-family:Georgia,'Times New Roman',serif; line-height:1.5; } /* Fondo, color y letra */
-header{ background:var(--verde); color:#faf8ec; text-align:center; padding:28px 16px 20px; } /* Franja verde superior */
+body{ margin:0; background:var(--crema); color:var(--tinta); font-family:Georgia,'Times New Roman',serif; line-height:1.5; } /* Fondo y letra */
+header{ background:var(--verde); color:#faf8ec; text-align:center; padding:28px 16px 20px; } /* Franja verde */
 h1{ margin:0; font-size:2rem; letter-spacing:.2em; font-weight:400; } /* Nombre YAD */
-header p{ margin:4px 0 0; color:var(--oro); font-style:italic; } /* Frase bajo el nombre */
-nav{ display:flex; max-width:560px; margin:0 auto; } /* Pestañas en fila */
-nav button{ flex:1; padding:14px; border:0; background:none; color:var(--tinta); font:inherit; border-bottom:3px solid transparent; cursor:pointer; } /* Botones de pestaña */
-nav button.on{ border-bottom-color:var(--oro); font-weight:700; } /* Pestaña activa */
+header p{ margin:4px 0 0; color:var(--oro); font-style:italic; } /* Subtítulo */
 main{ max-width:560px; margin:0 auto; padding:8px 16px 40px; } /* Contenido centrado */
-label{ display:block; margin:14px 0 4px; font-weight:700; } /* Etiquetas de campos */
-select,input,textarea{ width:100%; box-sizing:border-box; padding:11px; font:inherit; color:var(--tinta); background:var(--caja); border:1px solid var(--borde); border-radius:8px; } /* Campos de texto */
-textarea{ min-height:110px; } /* Alto de la lista de nombres */
+label{ display:block; margin:14px 0 4px; font-weight:700; } /* Etiquetas */
+select,input,textarea{ width:100%; box-sizing:border-box; padding:11px; font:inherit; color:var(--tinta); background:var(--caja); border:1px solid var(--borde); border-radius:8px; } /* Campos */
+textarea{ min-height:110px; } /* Alto de nombres */
 .nota{ font-style:italic; color:var(--oro); margin:6px 0 0; } /* Texto de ayuda */
-.total{ background:var(--caja); border:1px solid var(--oro); border-radius:12px; padding:14px 16px; margin:20px 0 12px; } /* Cuadro de total */
-.total p{ margin:2px 0; display:flex; justify-content:space-between; } /* Una línea del total */
+.total{ background:var(--caja); border:1px solid var(--oro); border-radius:12px; padding:14px 16px; margin:20px 0 12px; } /* Cuadros de total y pago */
+.total p{ margin:4px 0; display:flex; justify-content:space-between; gap:8px; align-items:center; } /* Líneas del cuadro */
 .btn{ display:block; width:100%; padding:14px; margin-top:10px; border:0; border-radius:999px; font:inherit; font-weight:700; cursor:pointer; background:var(--oro); color:#fff; } /* Botón principal */
-.btn.sec{ background:none; color:var(--tinta); border:1px solid var(--borde); } /* Botón secundario */
-.btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,nav button:focus-visible{ outline:3px solid var(--oro); outline-offset:2px; } /* Foco visible con teclado */
-.ped{ background:var(--caja); border:1px solid var(--borde); border-radius:10px; padding:12px 14px; margin-top:12px; } /* Tarjeta de pedido */
-.ped h3{ margin:0 0 4px; font-size:1.05rem; } /* Título del pedido */
-.ped p{ margin:2px 0; font-size:.95rem; } /* Texto del pedido */
-.fila{ display:flex; gap:8px; margin-top:8px; } /* Fila de estado y borrar */
-.fila button{ padding:8px 12px; font:inherit; border-radius:8px; border:1px solid var(--borde); background:none; color:var(--tinta); cursor:pointer; } /* Botón borrar */
+.btn.sec{ width:auto; margin:0; padding:8px 14px; background:none; color:var(--tinta); border:1px solid var(--borde); } /* Botón secundario */
+.btn:disabled{ opacity:.6; } /* Botón bloqueado */
+.btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{ outline:3px solid var(--oro); outline-offset:2px; } /* Foco visible */
 [hidden]{ display:none !important; } /* Oculta lo que tenga hidden */
 </style>
 </head>
-<body><!-- Cuerpo visible -->
+<body><!-- Cuerpo -->
 <header><!-- Cabecera -->
 <h1>YAD</h1><!-- Nombre -->
 <p>Velas de Navidad · Soacha, Cundinamarca</p><!-- Subtítulo -->
 </header>
-<nav><!-- Pestañas -->
-<button id="tPedido" class="on" type="button">Hacer pedido</button><!-- Pestaña 1 -->
-<button id="tLista" type="button">Pedidos guardados</button><!-- Pestaña 2 -->
-</nav>
 <main><!-- Contenido -->
-<section id="vPedido"><!-- Vista del formulario -->
 <label for="cliente">Nombre de quien pide</label><!-- Etiqueta -->
 <input id="cliente" placeholder="Ej: Laura Gómez"><!-- Campo cliente -->
 <label for="ref">Referencia</label><!-- Etiqueta -->
-<select id="ref"><!-- Lista de referencias -->
+<select id="ref"><!-- Referencias -->
 <option value="unidos">Lejos pero Unidos · $17.000</option><!-- Opción 1 -->
 <option value="nombre">Velas con nombre · $15.000</option><!-- Opción 2 -->
 <option value="deseos">Deseos y Propósitos · $15.000</option><!-- Opción 3 -->
 </select>
-<p class="nota" id="nota"></p><!-- Ayuda según la referencia -->
+<p class="nota" id="nota"></p><!-- Ayuda según referencia -->
 <div id="fColor"><!-- Solo Lejos pero Unidos -->
 <label for="color">Color</label><!-- Etiqueta -->
 <select id="color"><option>Blanca (sin mezclar)</option><option>Pastel (colores mezclados)</option></select><!-- Colores -->
@@ -64,115 +51,96 @@ textarea{ min-height:110px; } /* Alto de la lista de nombres */
 </div>
 <div id="fVinilo"><!-- Vinilo para nombre y deseos -->
 <label for="vinilo">Vinilo</label><!-- Etiqueta -->
-<select id="vinilo"><option>Dorado</option><option>Blanco</option></select><!-- Colores de vinilo -->
+<select id="vinilo"><option>Dorado</option><option>Blanco</option></select><!-- Vinilos -->
 </div>
 <label for="cajas">Cajas de 10 velas</label><!-- Etiqueta -->
-<input id="cajas" type="number" min="1" value="1" inputmode="numeric"><!-- Cantidad de cajas -->
+<input id="cajas" type="number" min="1" value="1" inputmode="numeric"><!-- Cajas -->
 <div id="fNombres"><!-- Solo Velas con nombre -->
 <label for="nombres">Nombres, uno por línea</label><!-- Etiqueta -->
-<textarea id="nombres" placeholder="Laura Valentina&#10;Camilo&#10;Familia"></textarea><!-- Lista de nombres -->
-<p class="nota" id="cuenta"></p><!-- Contador de nombres -->
+<textarea id="nombres" placeholder="Laura Valentina&#10;Camilo&#10;Familia"></textarea><!-- Nombres -->
+<p class="nota" id="cuenta"></p><!-- Contador -->
 </div>
 <label for="ciudad">Entrega</label><!-- Etiqueta -->
 <select id="ciudad"><option value="Bogotá (sábados)">Bogotá · sábados</option><option value="Soacha (miércoles y jueves)">Soacha · miércoles y jueves</option></select><!-- Zonas -->
-<div class="total"><!-- Cuadro de totales -->
-<p><span>Total</span><strong id="total"></strong></p><!-- Total del pedido -->
+<div class="total"><!-- Totales -->
+<p><span>Total</span><strong id="total"></strong></p><!-- Total -->
 <p id="pAnt"><span>Anticipo para iniciar</span><strong id="anticipo"></strong></p><!-- Anticipo -->
 </div>
-<button class="btn" id="enviar" type="button">Enviar pedido por WhatsApp</button><!-- Envía a WhatsApp -->
-<button class="btn sec" id="guardar" type="button">Solo guardar el pedido</button><!-- Guarda sin enviar -->
-<p class="nota">Pedido confirmado: sin cambios ni devolución de dinero.</p><!-- Aviso de la política -->
-</section>
-<section id="vLista" hidden><!-- Vista de pedidos guardados -->
-<p class="nota">Los pedidos se guardan solo en este celular.</p><!-- Aviso de almacenamiento -->
-<div id="lista"></div><!-- Aquí se dibujan los pedidos -->
-</section>
+<div class="total" id="pago" hidden><!-- Cuadro de pago del anticipo -->
+<p>Paga el anticipo con llave de Nu:</p><!-- Instrucción -->
+<p><strong id="llave"></strong><button class="btn sec" id="copiar" type="button">Copiar</button></p><!-- Llave y botón copiar -->
+<p class="nota">Después de enviar el pedido, adjunta el comprobante en WhatsApp.</p><!-- Recordatorio -->
+</div>
+<button class="btn" id="enviar" type="button">Enviar pedido por WhatsApp</button><!-- Guarda y abre WhatsApp -->
+<p class="nota">Pedido confirmado: sin cambios ni devolución de dinero.</p><!-- Política -->
 </main>
-<script><!-- Lógica de la página -->
-const TEL = '573118010037'; // Número de WhatsApp del negocio con indicativo de Colombia
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"; // Carga Firebase
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"; // Carga la base de datos
+const firebaseConfig = { // Datos de tu proyecto (no son contraseñas)
+  apiKey: "AIzaSyDTV7xZ6kc1f-XhCLVwsxesMhLDuvxQk9w", // Identificador de la clave web
+  authDomain: "yad-pedidos.firebaseapp.com", // Dominio de login
+  projectId: "yad-pedidos", // Nombre del proyecto
+  storageBucket: "yad-pedidos.firebasestorage.app", // Almacenamiento (no se usa)
+  messagingSenderId: "543684523641", // Identificador de mensajería
+  appId: "1:543684523641:web:86d12db6f5941ed4b9c6a8" // Identificador de la app web
+}; // Fin de la configuración
+const db = getFirestore(initializeApp(firebaseConfig)); // Conecta con Firestore
+const TEL = '573118010037'; // WhatsApp del negocio con indicativo de Colombia
+const LLAVE = 'PEGA_AQUI_TU_LLAVE_NU'; // Llave de Nu para el anticipo (cámbiala por la tuya)
 const REF = { // Datos de cada referencia
   unidos: { n: 'Lejos pero Unidos', p: 17000, ant: 0, nota: 'Las frases vienen fijas, no se modifican. Vinilo dorado. Tarjeta incluida.' }, // Referencia 1
   nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
   deseos: { n: 'Deseos y Propósitos', p: 15000, ant: 0, nota: 'Una vela por deseo: Amor, Trabajo, Familia, Abundancia, Alegría, Sabiduría, Paz, Sueños, Fe y Prosperidad. Pastel.' } // Referencia 3
 };
-const $ = id => document.getElementById(id); // Atajo para buscar elementos por id
-const peso = n => '$' + n.toLocaleString('es-CO'); // Da formato de pesos, ej: $17.000
-function cargar() { try { return JSON.parse(localStorage.getItem('yadPedidos') || '[]'); } catch (e) { return []; } } // Lee los pedidos guardados
-function guardarLista(l) { try { localStorage.setItem('yadPedidos', JSON.stringify(l)); } catch (e) {} } // Guarda la lista de pedidos
-function cajas() { return Math.max(1, parseInt($('cajas').value) || 1); } // Cantidad de cajas (mínimo 1)
-function lineasNombres() { return $('nombres').value.split('\n').map(s => s.trim()).filter(Boolean); } // Nombres sin líneas vacías
-function actualizar() { // Ajusta el formulario a la referencia elegida
+const $ = id => document.getElementById(id); // Atajo para buscar por id
+const peso = n => '$' + n.toLocaleString('es-CO'); // Formato de pesos
+const cajas = () => Math.max(1, parseInt($('cajas').value) || 1); // Cajas (mínimo 1)
+const lineasNombres = () => $('nombres').value.split('\n').map(s => s.trim()).filter(Boolean); // Nombres sin líneas vacías
+function actualizar() { // Ajusta el formulario a la referencia
   const r = $('ref').value; // Referencia actual
   $('nota').textContent = REF[r].nota; // Muestra la ayuda
   $('fColor').hidden = r !== 'unidos'; // Color solo en Lejos pero Unidos
   $('fSimbolo').hidden = r !== 'unidos'; // Símbolo solo en Lejos pero Unidos
-  $('fVinilo').hidden = r === 'unidos'; // Vinilo elegible en las otras dos
+  $('fVinilo').hidden = r === 'unidos'; // Vinilo elegible en las otras
   $('fNombres').hidden = r !== 'nombre'; // Nombres solo en Velas con nombre
-  $('total').textContent = peso(REF[r].p * cajas()); // Calcula el total
+  $('total').textContent = peso(REF[r].p * cajas()); // Total
   $('pAnt').hidden = REF[r].ant === 0; // Anticipo solo si aplica
-  $('anticipo').textContent = peso(REF[r].ant); // Muestra el anticipo
-  $('cuenta').textContent = lineasNombres().length + ' de ' + (cajas() * 10) + ' nombres'; // Contador de nombres
+  $('pago').hidden = REF[r].ant === 0; // Cuadro de pago solo si aplica
+  $('anticipo').textContent = peso(REF[r].ant); // Valor del anticipo
+  $('cuenta').textContent = lineasNombres().length + ' de ' + (cajas() * 10) + ' nombres'; // Contador
 }
-function leer() { // Junta los datos del formulario en un objeto
+function leer() { // Junta los datos del formulario
   const r = $('ref').value; // Referencia actual
   return { // Objeto del pedido
-    id: Date.now(), cliente: $('cliente').value.trim(), ref: r, cajas: cajas(), // Datos generales
+    cliente: $('cliente').value.trim(), ref: r, refNombre: REF[r].n, cajas: cajas(), // Datos generales
     color: r === 'unidos' ? $('color').value : 'Pastel (colores mezclados)', // Color
     simbolo: r === 'unidos' ? $('simbolo').value : '', // Símbolo
     vinilo: r === 'unidos' ? 'Dorado' : $('vinilo').value, // Vinilo
     nombres: r === 'nombre' ? lineasNombres() : [], // Lista de nombres
-    ciudad: $('ciudad').value, total: REF[r].p * cajas(), ant: REF[r].ant, estado: 'Recibido' // Entrega y dinero
+    ciudad: $('ciudad').value, total: REF[r].p * cajas(), ant: REF[r].ant, estado: 'Pendiente de pago' // Entrega, dinero y estado inicial
   };
 }
-function valido(p) { // Revisa que el pedido esté completo
-  if (!p.cliente) { alert('Escribe el nombre de quien pide.'); return false; } // Falta el cliente
-  if (p.ref === 'nombre' && p.nombres.length === 0) { alert('Escribe al menos un nombre.'); return false; } // Faltan nombres
-  return true; // Todo bien
-}
-function mensaje(p) { // Arma el texto que va a WhatsApp
-  const l = ['Hola, quiero hacer un pedido:', 'Cliente: ' + p.cliente, 'Referencia: ' + REF[p.ref].n, 'Cajas de 10 velas: ' + p.cajas, 'Color: ' + p.color]; // Líneas base
+function mensaje(p) { // Arma el texto de WhatsApp
+  const l = ['Hola, quiero hacer un pedido:', 'Cliente: ' + p.cliente, 'Referencia: ' + p.refNombre, 'Cajas de 10 velas: ' + p.cajas, 'Color: ' + p.color]; // Líneas base
   if (p.simbolo) l.push('Símbolo: ' + p.simbolo); // Símbolo si hay
   l.push('Vinilo: ' + p.vinilo); // Vinilo
   if (p.nombres.length) l.push('Nombres:', ...p.nombres.map((n, i) => (i + 1) + '. ' + n)); // Nombres numerados
   l.push('Entrega: ' + p.ciudad, 'Total: ' + peso(p.total)); // Entrega y total
-  if (p.ant) l.push('Anticipo: ' + peso(p.ant)); // Anticipo si aplica
-  return l.join('\n'); // Une todo en un texto
+  if (p.ant) l.push('Anticipo: ' + peso(p.ant) + ' (adjunto el comprobante)'); // Anticipo si aplica
+  return l.join('\n'); // Une todo
 }
-function guardarPedido(p) { const l = cargar(); l.unshift(p); guardarLista(l); pintar(); } // Agrega el pedido al inicio y redibuja
-$('enviar').onclick = () => { // Al tocar "Enviar por WhatsApp"
+$('enviar').onclick = async () => { // Al tocar "Enviar"
   const p = leer(); // Toma los datos
-  if (!valido(p)) return; // Si falta algo, se detiene
-  guardarPedido(p); // Lo guarda en el celular
-  window.open('https://wa.me/' + TEL + '?text=' + encodeURIComponent(mensaje(p)), '_blank'); // Abre WhatsApp con el texto listo
+  if (!p.cliente) { alert('Escribe el nombre de quien pide.'); return; } // Falta el cliente
+  if (p.ref === 'nombre' && !p.nombres.length) { alert('Escribe al menos un nombre.'); return; } // Faltan nombres
+  $('enviar').disabled = true; // Evita doble envío
+  try { await addDoc(collection(db, 'pedidos'), { ...p, creado: serverTimestamp() }); } catch (e) { console.error(e); } // Guarda en Firestore (si falla, igual sigue a WhatsApp)
+  location.href = 'https://wa.me/' + TEL + '?text=' + encodeURIComponent(mensaje(p)); // Abre WhatsApp con el pedido
+  setTimeout(() => { $('enviar').disabled = false; }, 3000); // Reactiva el botón si el cliente vuelve
 };
-$('guardar').onclick = () => { // Al tocar "Solo guardar"
-  const p = leer(); // Toma los datos
-  if (!valido(p)) return; // Si falta algo, se detiene
-  guardarPedido(p); // Lo guarda
-  alert('Pedido guardado.'); // Avisa
-};
-function pintar() { // Dibuja la lista de pedidos
-  const cont = $('lista'); cont.textContent = ''; // Limpia la lista
-  const l = cargar(); // Lee los pedidos
-  if (!l.length) { cont.textContent = 'Aún no hay pedidos guardados.'; return; } // Mensaje si no hay
-  l.forEach(p => { // Una tarjeta por pedido
-    const d = document.createElement('div'); d.className = 'ped'; // Crea la tarjeta
-    const h = document.createElement('h3'); h.textContent = p.cliente + ' · ' + REF[p.ref].n; d.appendChild(h); // Título
-    const t = document.createElement('p'); t.textContent = p.cajas + ' caja(s) · ' + p.color + ' · ' + peso(p.total); d.appendChild(t); // Resumen
-    const e = document.createElement('p'); e.textContent = 'Entrega: ' + p.ciudad; d.appendChild(e); // Entrega
-    if (p.nombres.length) { const n = document.createElement('p'); n.textContent = 'Nombres: ' + p.nombres.join(', '); d.appendChild(n); } // Nombres
-    const f = document.createElement('div'); f.className = 'fila'; // Fila de acciones
-    const s = document.createElement('select'); // Lista de estados
-    ['Recibido', 'Confirmado', 'En producción', 'Entregado'].forEach(x => { const o = document.createElement('option'); o.textContent = x; o.selected = x === p.estado; s.appendChild(o); }); // Opciones
-    s.onchange = () => { p.estado = s.value; guardarLista(l); }; // Guarda el cambio de estado
-    const b = document.createElement('button'); b.textContent = 'Borrar'; // Botón borrar
-    b.onclick = () => { if (confirm('¿Borrar este pedido?')) { guardarLista(l.filter(x => x.id !== p.id)); pintar(); } }; // Borra con confirmación
-    f.append(s, b); d.appendChild(f); cont.appendChild(d); // Agrega todo a la pantalla
-  });
-}
-function ver(lista) { $('vPedido').hidden = lista; $('vLista').hidden = !lista; $('tPedido').className = lista ? '' : 'on'; $('tLista').className = lista ? 'on' : ''; } // Cambia de pestaña
-$('tPedido').onclick = () => ver(false); // Pestaña "Hacer pedido"
-$('tLista').onclick = () => { pintar(); ver(true); }; // Pestaña "Pedidos guardados"
+$('copiar').onclick = async () => { try { await navigator.clipboard.writeText(LLAVE); $('copiar').textContent = '¡Copiada!'; } catch (e) { alert(LLAVE); } }; // Copia la llave (o la muestra si no puede)
+$('llave').textContent = LLAVE; // Muestra la llave en pantalla
 ['ref', 'cajas', 'nombres'].forEach(id => $(id).addEventListener('input', actualizar)); // Recalcula al cambiar datos
 actualizar(); // Primer cálculo al abrir
 </script>
