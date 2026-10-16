@@ -23,6 +23,8 @@ textarea{ min-height:110px; } /* Alto de nombres */
 .btn.sec{ width:auto; margin:0; padding:8px 14px; background:none; color:var(--tinta); border:1px solid var(--borde); } /* Botón secundario */
 .btn:disabled{ opacity:.6; } /* Botón bloqueado */
 .btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{ outline:3px solid var(--oro); outline-offset:2px; } /* Foco visible */
+.chk{ display:flex; gap:10px; align-items:flex-start; font-weight:400; margin:10px 0 0; } /* Casilla de confirmación de pago */
+.chk input{ width:auto; margin-top:5px; } /* Casilla de tamaño normal */
 [hidden]{ display:none !important; } /* Oculta lo que tenga hidden */
 </style>
 </head>
@@ -66,9 +68,11 @@ textarea{ min-height:110px; } /* Alto de nombres */
 <p><span>Total</span><strong id="total"></strong></p><!-- Total -->
 <p id="pAnt"><span>Anticipo para iniciar</span><strong id="anticipo"></strong></p><!-- Anticipo -->
 </div>
-<div class="total" id="pago" hidden><!-- Cuadro de pago del anticipo -->
-<p>Paga el anticipo con llave de Nu:</p><!-- Instrucción -->
+<div class="total" id="pago"><!-- Cuadro de pago (visible en todas las referencias) -->
+<p>Paga con llave de Nu:</p><!-- Instrucción -->
 <p><strong id="llave"></strong><button class="btn sec" id="copiar" type="button">Copiar</button></p><!-- Llave y botón copiar -->
+<p class="nota" id="avisoPago"></p><!-- Aviso según la referencia -->
+<label class="chk" id="fCheck" hidden><input id="check" type="checkbox"><span>Ya pagué el anticipo y adjuntaré el comprobante en WhatsApp.</span></label><!-- Casilla obligatoria en Velas con nombre -->
 <p class="nota">Después de enviar el pedido, adjunta el comprobante en WhatsApp.</p><!-- Recordatorio -->
 </div>
 <button class="btn" id="enviar" type="button">Enviar pedido por WhatsApp</button><!-- Guarda y abre WhatsApp -->
@@ -104,11 +108,14 @@ function actualizar() { // Ajusta el formulario a la referencia
   if ($('color').dataset.ref !== r) { $('color').innerHTML = REF[r].colores.map(c => '<option>' + c + '</option>').join(''); $('color').dataset.ref = r; } // Llena los colores solo cuando cambia la referencia
   $('fSimbolo').hidden = r !== 'unidos'; // Símbolo solo en Lejos pero Unidos
   const roja = r === 'deseos' && $('color').value === 'Roja'; // Es una vela roja de Deseos
-  $('fVinilo').hidden = r === 'unidos' || roja; // Vinilo oculto en Lejos pero Unidos y en las rojas (siempre dorado)
+  $('fVinilo').hidden = r === 'unidos'; // Vinilo oculto solo en Lejos pero Unidos (siempre dorado)
+  const opcV = roja ? ['Dorado'] : ['Dorado', 'Blanco']; // Vinilos permitidos: las rojas solo dorado
+  if ($('vinilo').options.length !== opcV.length) { $('vinilo').innerHTML = opcV.map(v => '<option>' + v + '</option>').join(''); } // Cambia las opciones solo si hace falta
   $('fNombres').hidden = r !== 'nombre'; // Nombres solo en Velas con nombre
   $('total').textContent = peso(REF[r].p * cajas()); // Total
   $('pAnt').hidden = REF[r].ant === 0; // Anticipo solo si aplica
-  $('pago').hidden = REF[r].ant === 0; // Cuadro de pago solo si aplica
+  $('fCheck').hidden = REF[r].ant === 0; // Casilla obligatoria solo en Velas con nombre
+  $('avisoPago').textContent = REF[r].ant ? 'Anticipo obligatorio de ' + peso(REF[r].ant) + ' para iniciar la producción.' : 'Puedes pagar desde ahora y enviar el comprobante por WhatsApp.'; // Aviso según la referencia
   $('anticipo').textContent = peso(REF[r].ant); // Valor del anticipo
   $('cuenta').textContent = lineasNombres().length + ' de ' + (cajas() * 10) + ' nombres'; // Contador
 }
@@ -136,6 +143,7 @@ $('enviar').onclick = async () => { // Al tocar "Enviar"
   const p = leer(); // Toma los datos
   if (!p.cliente) { alert('Escribe el nombre de quien pide.'); return; } // Falta el cliente
   if (p.ref === 'nombre' && !p.nombres.length) { alert('Escribe al menos un nombre.'); return; } // Faltan nombres
+  if (p.ant && !$('check').checked) { alert('Para continuar, confirma que pagaste el anticipo.'); return; } // Anticipo obligatorio solo en Velas con nombre
   $('enviar').disabled = true; // Evita doble envío
   try { await addDoc(collection(db, 'pedidos'), { ...p, creado: serverTimestamp() }); } catch (e) { console.error(e); } // Guarda en Firestore (si falla, igual sigue a WhatsApp)
   location.href = 'https://wa.me/' + TEL + '?text=' + encodeURIComponent(mensaje(p)); // Abre WhatsApp con el pedido
