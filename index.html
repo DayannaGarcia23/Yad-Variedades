@@ -4,8 +4,8 @@
 <meta charset="utf-8"><!-- Permite tildes y ñ -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><!-- Ajusta al celular -->
 <title>YAD Variedades · Pedidos</title><!-- Título de la pestaña -->
-<style><!-- Estilos -->
-:root{ --verde:#243a2d; --crema:#2d4336; --oro:#b8963e; --tinta:#efeadb; --caja:#3a5444; --borde:#587061; color-scheme:dark; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); } /* Colores base y márgenes seguros */
+<style>
+:root{ --verde:#243a2d; --crema:#2d4336; --oro:#d4b25f; --tinta:#efeadb; --caja:#3a5444; --borde:#587061; color-scheme:dark; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); } /* Colores base y márgenes seguros */
 body{ margin:0; background:var(--crema); color:var(--tinta); font-family:Georgia,'Times New Roman',serif; line-height:1.5; } /* Fondo y letra */
 header{ background:var(--verde); color:#faf8ec; text-align:center; padding:28px 16px 20px; } /* Franja verde */
 h1{ margin:0; font-size:2rem; letter-spacing:.2em; font-weight:400; } /* Nombre YAD */
@@ -17,9 +17,10 @@ textarea{ min-height:110px; } /* Alto de nombres */
 .nota{ font-style:italic; color:var(--oro); margin:6px 0 0; } /* Texto de ayuda */
 .total{ background:var(--caja); border:1px solid var(--oro); border-radius:12px; padding:14px 16px; margin:20px 0 12px; } /* Cuadros de total y pago */
 .total p{ margin:4px 0; display:flex; justify-content:space-between; gap:8px; align-items:center; } /* Líneas del cuadro */
-.btn{ display:block; width:100%; padding:14px; margin-top:10px; border:0; border-radius:999px; font:inherit; font-weight:700; cursor:pointer; background:var(--oro); color:#fff; } /* Botón principal */
+.btn{ display:block; width:100%; padding:14px; margin-top:10px; border:0; border-radius:999px; font:inherit; font-weight:700; cursor:pointer; background:var(--oro); color:#1f2f26; } /* Botón principal */
 .btn.sec{ width:auto; margin:0; padding:8px 14px; background:none; color:var(--tinta); border:1px solid var(--borde); } /* Botón secundario */
 .btn:disabled{ opacity:.6; } /* Botón bloqueado */
+::placeholder{ color:var(--tinta); opacity:.6; } /* Texto de ejemplo legible */
 .btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{ outline:3px solid var(--oro); outline-offset:2px; } /* Foco visible */
 .chk{ display:flex; gap:10px; align-items:flex-start; font-weight:400; margin:10px 0 0; } /* Casilla de confirmación de pago */
 .chk input{ width:auto; margin-top:5px; } /* Casilla de tamaño normal */
@@ -92,7 +93,7 @@ const firebaseConfig = { // Datos de tu proyecto (no son contraseñas)
 }; // Fin de la configuración
 const db = getFirestore(initializeApp(firebaseConfig)); // Conecta con Firestore
 const TEL = '573118010037'; // WhatsApp del negocio con indicativo de Colombia
-const LLAVE = '@YGS336'; // Llave de Nu para el anticipo (cámbiala por la tuya)
+const LLAVE = 'PEGA_AQUI_TU_LLAVE_NU'; // Llave de Nu para el anticipo (cámbiala por la tuya)
 const REF = { // Datos de cada referencia
   unidos: { n: 'Lejos pero Unidos', p: 17000, ant: 0, colores: ['Blanca (sin mezclar)', 'Pastel (colores mezclados)'], nota: 'Las frases vienen fijas, no se modifican. Vinilo dorado. Tarjeta incluida.' }, // Referencia 1
   nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, colores: ['Pastel (colores mezclados)'], nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
