@@ -64,6 +64,8 @@ textarea{ min-height:110px; } /* Alto de nombres */
 </div>
 <label for="ciudad">Entrega</label><!-- Etiqueta -->
 <select id="ciudad"><option value="Bogotá (sábados)">Bogotá · sábados</option><option value="Soacha (miércoles y jueves)">Soacha · miércoles y jueves</option></select><!-- Zonas -->
+<label for="direccion">Dirección de entrega</label><!-- Etiqueta -->
+<input id="direccion" placeholder="Ej: Calle 10 # 5-20, barrio, conjunto o apto" autocomplete="street-address"><!-- Dirección de entrega -->
 <div class="total"><!-- Totales -->
 <p><span>Total</span><strong id="total"></strong></p><!-- Total -->
 <p id="pAnt"><span>Anticipo para iniciar</span><strong id="anticipo"></strong></p><!-- Anticipo -->
@@ -91,7 +93,7 @@ const firebaseConfig = { // Datos de tu proyecto (no son contraseñas)
 }; // Fin de la configuración
 const db = getFirestore(initializeApp(firebaseConfig)); // Conecta con Firestore
 const TEL = '573118010037'; // WhatsApp del negocio con indicativo de Colombia
-const LLAVE = '@YGS336'; // Llave de Nu para el anticipo (cámbiala por la tuya)
+const LLAVE = 'PEGA_AQUI_TU_LLAVE_NU'; // Llave de Nu para el anticipo (cámbiala por la tuya)
 const REF = { // Datos de cada referencia
   unidos: { n: 'Lejos pero Unidos', p: 17000, ant: 0, colores: ['Blanca (sin mezclar)', 'Pastel (colores mezclados)'], nota: 'Las frases vienen fijas, no se modifican. Vinilo dorado. Tarjeta incluida.' }, // Referencia 1
   nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, colores: ['Pastel (colores mezclados)'], nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
@@ -127,7 +129,7 @@ function leer() { // Junta los datos del formulario
     simbolo: r === 'unidos' ? $('simbolo').value : '', // Símbolo
     vinilo: (r === 'unidos' || (r === 'deseos' && $('color').value === 'Roja')) ? 'Dorado' : $('vinilo').value, // Vinilo (dorado fijo en Unidos y en velas rojas)
     nombres: r === 'nombre' ? lineasNombres() : [], // Lista de nombres
-    ciudad: $('ciudad').value, total: REF[r].p * cajas(), ant: REF[r].ant, estado: 'Pendiente de pago' // Entrega, dinero y estado inicial
+    ciudad: $('ciudad').value, direccion: $('direccion').value.trim(), total: REF[r].p * cajas(), ant: REF[r].ant, estado: 'Pendiente de pago' // Entrega, dinero y estado inicial
   };
 }
 function mensaje(p) { // Arma el texto de WhatsApp
@@ -135,13 +137,14 @@ function mensaje(p) { // Arma el texto de WhatsApp
   if (p.simbolo) l.push('Símbolo: ' + p.simbolo); // Símbolo si hay
   l.push('Vinilo: ' + p.vinilo); // Vinilo
   if (p.nombres.length) l.push('Nombres:', ...p.nombres.map((n, i) => (i + 1) + '. ' + n)); // Nombres numerados
-  l.push('Entrega: ' + p.ciudad, 'Total: ' + peso(p.total)); // Entrega y total
+  l.push('Entrega: ' + p.ciudad, 'Dirección: ' + p.direccion, 'Total: ' + peso(p.total)); // Entrega, dirección y total
   if (p.ant) l.push('Anticipo: ' + peso(p.ant) + ' (adjunto el comprobante)'); // Anticipo si aplica
   return l.join('\n'); // Une todo
 }
 $('enviar').onclick = async () => { // Al tocar "Enviar"
   const p = leer(); // Toma los datos
   if (!p.cliente) { alert('Escribe el nombre de quien pide.'); return; } // Falta el cliente
+  if (!p.direccion) { alert('Escribe la dirección de entrega.'); return; } // Falta la dirección
   if (p.ref === 'nombre' && !p.nombres.length) { alert('Escribe al menos un nombre.'); return; } // Faltan nombres
   if (p.ant && !$('check').checked) { alert('Para continuar, confirma que pagaste el anticipo.'); return; } // Anticipo obligatorio solo en Velas con nombre
   $('enviar').disabled = true; // Evita doble envío
