@@ -15,9 +15,9 @@ label{ display:block; margin:14px 0 4px; font-weight:700; } /* Etiquetas */
 select,input,textarea{ width:100%; box-sizing:border-box; padding:11px; font:inherit; color:var(--tinta); background:var(--campo); border:1px solid var(--borde); border-radius:8px; } /* Campos beige suave */
 textarea{ min-height:110px; } /* Alto de nombres */
 .nota{ font-style:italic; color:var(--salvia-claro); margin:6px 0 0; } /* Texto de ayuda en cursiva */
-.total{ background:var(--precio); border:1px solid var(--salvia-claro); color:var(--tinta); border-radius:12px; padding:14px 16px; margin:20px 0 12px; } /* Cuadros de total y pago */
+.total{ background:var(--campo); border:1px solid var(--borde); color:var(--tinta); border-radius:12px; padding:14px 16px; margin:20px 0 12px; } /* Cuadros de total y pago */
 .total p{ margin:4px 0; display:flex; justify-content:space-between; gap:8px; align-items:center; } /* Líneas del cuadro */
-.btn{ display:block; width:100%; padding:14px; margin-top:10px; border:0; border-radius:999px; font:inherit; font-weight:700; cursor:pointer; background:var(--salvia); color:var(--cab); } /* Botón principal verde salvia */
+.btn{ display:block; width:100%; padding:14px; margin-top:10px; border:1px solid var(--borde); border-radius:999px; font:inherit; font-weight:700; cursor:pointer; background:var(--campo); color:var(--tinta); } /* Botón principal con los colores de los campos */
 .btn.sec{ width:auto; margin:0; padding:8px 14px; background:none; color:var(--tinta); border:1px solid var(--borde); } /* Botón secundario */
 .btn:disabled{ opacity:.6; } /* Botón bloqueado */
 .btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{ outline:3px solid var(--salvia); outline-offset:2px; } /* Foco visible */
@@ -93,7 +93,7 @@ const firebaseConfig = { // Datos de tu proyecto (no son contraseñas)
 }; // Fin de la configuración
 const db = getFirestore(initializeApp(firebaseConfig)); // Conecta con Firestore
 const TEL = '573118010037'; // WhatsApp del negocio con indicativo de Colombia
-const LLAVE = '@YGS336'; // Llave de Nu para el anticipo (cámbiala por la tuya)
+const LLAVE = '@YGS336'; // Llave de Nu para el pago
 const REF = { // Datos de cada referencia
   unidos: { n: 'Lejos pero Unidos', p: 17000, ant: 0, colores: ['Blanca (sin mezclar)', 'Pastel (colores mezclados)'], nota: 'Las frases vienen fijas, no se modifican. Vinilo dorado. Tarjeta incluida.' }, // Referencia 1
   nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, colores: ['Pastel (colores mezclados)'], nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
