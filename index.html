@@ -5,22 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><!-- Ajusta al celular -->
 <title>YAD Variedades · Pedidos</title><!-- Título de la pestaña -->
 <style>
-:root{ --marfil:#D9D7D0; --cab:#FFFCF7; --salvia:#5F6B5A; --salvia-claro:#7D8A78; --campo:#F1F0EB; --borde:#B8B6AF; --tinta:#292929; --caja-total:#C9CEC5; --boton:#555750; color-scheme:light; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); } /* Paleta y márgenes seguros del celular */
+:root{ --marfil:#D9D7D0; --campo:#F1F0EB; --borde:#B8B6AF; --tinta:#292929; --caja-total:#C9CEC5; --boton:#555750; color-scheme:light; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); } /* Paleta y márgenes seguros del celular */
 body{ margin:0; background:var(--marfil); color:var(--tinta); font-family:Georgia,'Times New Roman',serif; line-height:1.5; } /* Fondo marfil y letra negro suave */
-header{ background:var(--cab); color:var(--salvia); text-align:center; padding:28px 16px 20px; border-bottom:1px solid var(--borde); } /* Encabezado marfil claro */
-h1{ margin:0; font-size:2rem; letter-spacing:.2em; font-weight:400; color:var(--salvia); } /* Nombre YAD en verde salvia */
-header p{ margin:4px 0 0; color:var(--salvia-claro); font-style:italic; } /* Subtítulo */
+header{ background:var(--campo); color:var(--tinta); text-align:center; padding:28px 16px 20px; border-bottom:1px solid var(--borde); } /* Encabezado marfil claro */
+h1{ margin:0; font-size:2rem; letter-spacing:.2em; font-weight:400; color:var(--tinta); } /* Nombre YAD en negro suave */
+header p{ margin:4px 0 0; color:var(--boton); font-style:italic; } /* Subtítulo */
 main{ max-width:560px; margin:0 auto; padding:8px 16px 40px; } /* Contenido centrado */
 label{ display:block; margin:14px 0 4px; font-weight:700; } /* Etiquetas */
 select,input,textarea{ width:100%; box-sizing:border-box; padding:11px; font:inherit; color:var(--tinta); background:var(--campo); border:1px solid var(--borde); border-radius:8px; } /* Campos beige suave */
 textarea{ min-height:110px; } /* Alto de nombres */
-.nota{ font-style:italic; color:var(--salvia-claro); margin:6px 0 0; } /* Texto de ayuda en cursiva */
+.nota{ font-style:italic; color:var(--boton); margin:6px 0 0; } /* Texto de ayuda en cursiva */
 .total{ background:var(--caja-total); border:1px solid var(--borde); color:var(--tinta); border-radius:12px; padding:14px 16px; margin:20px 0 12px; } /* Cuadros de total y pago */
 .total p{ margin:4px 0; display:flex; justify-content:space-between; gap:8px; align-items:center; } /* Líneas del cuadro */
 .btn{ display:block; width:100%; padding:14px; margin-top:10px; border:1px solid var(--boton); border-radius:999px; font:inherit; font-weight:700; cursor:pointer; background:var(--boton); color:var(--campo); } /* Botón principal gris carbón con letra clara */
-.btn.sec{ width:auto; margin:0; padding:8px 14px; background:none; color:var(--tinta); border:1px solid var(--borde); } /* Botón secundario */
+.btn.sec{ width:auto; margin:0; padding:8px 14px; background:var(--boton); color:var(--campo); border:1px solid var(--boton); } /* Botón secundario (Copiar) gris carbón */
 .btn:disabled{ opacity:.6; } /* Botón bloqueado */
-.btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{ outline:3px solid var(--salvia); outline-offset:2px; } /* Foco visible */
+.btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{ outline:3px solid var(--boton); outline-offset:2px; } /* Foco visible */
 ::placeholder{ color:var(--tinta); opacity:.5; } /* Texto de ejemplo */
 .chk{ display:flex; gap:10px; align-items:flex-start; font-weight:400; margin:10px 0 0; } /* Casilla de confirmación de pago */
 .chk input{ width:auto; margin-top:5px; } /* Casilla de tamaño normal */
