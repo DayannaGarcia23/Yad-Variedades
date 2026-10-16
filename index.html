@@ -67,7 +67,8 @@ textarea{ min-height:110px; } /* Alto de nombres */
 <label for="direccion">Dirección de entrega</label><!-- Etiqueta -->
 <input id="direccion" placeholder="Ej: Calle 10 # 5-20, barrio, conjunto o apto" autocomplete="street-address"><!-- Dirección de entrega -->
 <div class="total"><!-- Totales -->
-<p><span>Total</span><strong id="total"></strong></p><!-- Total -->
+<p><span>Domicilio</span><strong id="domicilio"></strong></p><!-- Costo del domicilio -->
+<p><span>Total con domicilio</span><strong id="total"></strong></p><!-- Total -->
 <p id="pAnt"><span>Anticipo para iniciar</span><strong id="anticipo"></strong></p><!-- Anticipo -->
 </div>
 <div class="total" id="pago"><!-- Cuadro de pago (visible en todas las referencias) -->
@@ -102,6 +103,7 @@ const REF = { // Datos de cada referencia
 const $ = id => document.getElementById(id); // Atajo para buscar por id
 const peso = n => '$' + n.toLocaleString('es-CO'); // Formato de pesos
 const cajas = () => Math.max(1, parseInt($('cajas').value) || 1); // Cajas (mínimo 1)
+const costoDomicilio = () => $('ciudad').value.startsWith('Bogotá') ? 5000 : 2000; // Domicilio: Bogotá $5.000, Soacha $2.000
 const lineasNombres = () => $('nombres').value.split('\n').map(s => s.trim()).filter(Boolean); // Nombres sin líneas vacías
 function actualizar() { // Ajusta el formulario a la referencia
   const r = $('ref').value; // Referencia actual
@@ -114,7 +116,8 @@ function actualizar() { // Ajusta el formulario a la referencia
   const opcV = roja ? ['Dorado'] : ['Dorado', 'Blanco']; // Vinilos permitidos: las rojas solo dorado
   if ($('vinilo').options.length !== opcV.length) { $('vinilo').innerHTML = opcV.map(v => '<option>' + v + '</option>').join(''); } // Cambia las opciones solo si hace falta
   $('fNombres').hidden = r !== 'nombre'; // Nombres solo en Velas con nombre
-  $('total').textContent = peso(REF[r].p * cajas()); // Total
+  $('domicilio').textContent = peso(costoDomicilio()); // Muestra el domicilio
+  $('total').textContent = peso(REF[r].p * cajas() + costoDomicilio()); // Total = velas + domicilio
   $('pAnt').hidden = REF[r].ant === 0; // Anticipo solo si aplica
   $('fCheck').hidden = REF[r].ant === 0; // Casilla obligatoria solo en Velas con nombre
   $('avisoPago').textContent = REF[r].ant ? 'Anticipo obligatorio de ' + peso(REF[r].ant) + ' para iniciar la producción.' : 'Puedes pagar desde ahora y enviar el comprobante por WhatsApp.'; // Aviso según la referencia
@@ -129,7 +132,7 @@ function leer() { // Junta los datos del formulario
     simbolo: r === 'unidos' ? $('simbolo').value : '', // Símbolo
     vinilo: (r === 'unidos' || (r === 'deseos' && $('color').value === 'Roja')) ? 'Dorado' : $('vinilo').value, // Vinilo (dorado fijo en Unidos y en velas rojas)
     nombres: r === 'nombre' ? lineasNombres() : [], // Lista de nombres
-    ciudad: $('ciudad').value, direccion: $('direccion').value.trim(), total: REF[r].p * cajas(), ant: REF[r].ant, estado: 'Pendiente de pago' // Entrega, dinero y estado inicial
+    ciudad: $('ciudad').value, direccion: $('direccion').value.trim(), domicilio: costoDomicilio(), total: REF[r].p * cajas() + costoDomicilio(), ant: REF[r].ant, estado: 'Pendiente de pago' // Entrega, dinero y estado inicial
   };
 }
 function mensaje(p) { // Arma el texto de WhatsApp
@@ -137,7 +140,7 @@ function mensaje(p) { // Arma el texto de WhatsApp
   if (p.simbolo) l.push('Símbolo: ' + p.simbolo); // Símbolo si hay
   l.push('Vinilo: ' + p.vinilo); // Vinilo
   if (p.nombres.length) l.push('Nombres:', ...p.nombres.map((n, i) => (i + 1) + '. ' + n)); // Nombres numerados
-  l.push('Entrega: ' + p.ciudad, 'Dirección: ' + p.direccion, 'Total: ' + peso(p.total)); // Entrega, dirección y total
+  l.push('Entrega: ' + p.ciudad, 'Dirección: ' + p.direccion, 'Domicilio: ' + peso(p.domicilio), 'Total con domicilio: ' + peso(p.total)); // Entrega, dirección, domicilio y total
   if (p.ant) l.push('Anticipo: ' + peso(p.ant) + ' (adjunto el comprobante)'); // Anticipo si aplica
   return l.join('\n'); // Une todo
 }
@@ -154,7 +157,7 @@ $('enviar').onclick = async () => { // Al tocar "Enviar"
 };
 $('copiar').onclick = async () => { try { await navigator.clipboard.writeText(LLAVE); $('copiar').textContent = '¡Copiada!'; } catch (e) { alert(LLAVE); } }; // Copia la llave (o la muestra si no puede)
 $('llave').textContent = LLAVE; // Muestra la llave en pantalla
-['ref', 'color', 'cajas', 'nombres'].forEach(id => $(id).addEventListener('input', actualizar)); // Recalcula al cambiar datos
+['ref', 'color', 'cajas', 'nombres', 'ciudad'].forEach(id => $(id).addEventListener('input', actualizar)); // Recalcula al cambiar datos
 actualizar(); // Primer cálculo al abrir
 </script>
 </body>
