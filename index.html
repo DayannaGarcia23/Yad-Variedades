@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><!-- Ajusta al celular -->
 <title>YAD Variedades · Pedidos</title><!-- Título de la pestaña -->
 <style>
-:root{ --marfil:#D9D7D0; --campo:#F1F0EB; --borde:#B8B6AF; --tinta:#292929; --caja-total:#C9CEC5; --boton:#555750; color-scheme:light; } /* Paleta de colores */
+:root{ --marfil:#D9D7D0; --campo:#F1F0EB; --borde:#B8B6AF; --tinta:#292929;--caja-total:#C9CEC5; --boton:#555750; color-scheme:light; } /* Paleta de colores */
 *{ box-sizing:border-box; } /* Las medidas incluyen los bordes */
 body{ margin:0; background:var(--marfil); color:var(--tinta); font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; line-height:1.5; padding-bottom:calc(96px + env(safe-area-inset-bottom,0px)); } /* Fondo, letra y espacio para la barra fija */
 header{ background:#F7F3EA; padding-top:env(safe-area-inset-top,0px); border-bottom:1px solid var(--borde); } /* Encabezado con el fondo del logo */
@@ -81,7 +81,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <p class="nota" id="cuenta"></p><!-- Contador de nombres -->
 </div>
 <label for="codigo">Código de descuento (opcional)</label><!-- Etiqueta -->
-<div class="fila"><input id="codigo" placeholder="Ej: MAYOR-ANA" autocapitalize="characters" autocomplete="off"><button class="btn sec" id="aplicar" type="button">Aplicar</button></div><!-- Código mayorista -->
+<div class="fila"><input id="codigo" placeholder="" autocapitalize="characters" autocomplete="off"><button class="btn sec" id="aplicar" type="button">Aplicar</button></div><!-- Código mayorista -->
 <p class="nota" id="msgCodigo"></p><!-- Resultado del código -->
 </section>
 <section><!-- Bloque 3: entrega -->
