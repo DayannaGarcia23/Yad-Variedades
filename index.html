@@ -339,7 +339,7 @@ const TEL = '573118010037'; // WhatsApp del negocio con indicativo de Colombia
 const LLAVE = '@YGS336'; // Llave de Nu para el pago
 const REF = { // Datos de cada referencia
   unidos: { n: 'Lejos pero Unidos', p: 16000, ant: 0, colores: ['Blanca (sin mezclar)', 'Pastel (colores mezclados)'], nota: 'Las frases vienen fijas, no se modifican. Vinilo dorado. Tarjeta incluida.' }, // Referencia 1
-  nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, colores: ['Pastel (colores mezclados)','Blanca (sin mezclar)'], nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
+  nombre: { n: 'Velas con nombre', p: 15000, ant: 5000, colores: ['Pastel (colores mezclados)'], nota: 'Velas pastel. Un nombre o dos nombres/palabras cortas por vela. No sirven frases ni nombres muy largos.' }, // Referencia 2
   deseos: { n: 'Deseos y Propósitos', p: 15000, ant: 0, colores: ['Pastel (colores mezclados)', 'Roja'], nota: 'Una vela por deseo: Amor, Trabajo, Familia, Abundancia, Alegría, Sabiduría, Paz, Sueños, Fe y Prosperidad. En pastel o roja; las rojas solo con vinilo dorado.' } // Referencia 3
 };
 const FOTOS = { // Fotos de cada modelo (están en la carpeta del repositorio)
@@ -348,18 +348,27 @@ const FOTOS = { // Fotos de cada modelo (están en la carpeta del repositorio)
   deseos: 'DeseosR.jpeg' // Deseos y Propósito
 };
 const $ = id => document.getElementById(id); // Atajo para buscar por id
+      
 const peso = n => '$' + n.toLocaleString('es-CO'); // Formato de pesos
+      
 const cajas = () => Math.max(1, parseInt($('cajas').value) || 1); // Cajas (mínimo 1)
+      
 const recoge = () => $('ciudad').value.startsWith('Recoge'); // Es true si el cliente recoge el pedido
-const telefono = () => { let n = $('telefono').value.replace(/\D/g, ''); if (n.length === 12 && n.startsWith('57')) n = n.slice(2); return n; }; // Deja solo los números y quita el 57 si lo traen
+      
+const telefono = () => { let n = $('telefono').value.replace(/\D/g, ''); 
+                        if (n.length === 12 && n.startsWith('57')) n = n.slice(2); 
+                        return n; }; // Deja solo los números y quita el 57 si lo traen
+      
 let desc = null; // Código aplicado (null = ninguno)
+      
 const precioCaja = r => desc ? Math.min(REF[r].p, desc.precio) : REF[r].p; // Precio de cada caja: el del código si es menor
 const costoDomicilio = () => recoge() ? 0 : $('ciudad').value.startsWith('Bogotá') ? 5000 : 2000; // Domicilio: Bogotá $5.000, Soacha $2.000, recoger $0
 const lineasNombres = () => $('nombres').value.split('\n').map(s => s.trim()).filter(Boolean); // Nombres sin líneas vacías
 function actualizar() { // Ajusta el formulario a la referencia
   const r = $('ref').value; // Referencia actual
   $('nota').textContent = REF[r].nota; // Muestra la ayuda
-  $('fColor').hidden = r === 'nombre'; // Color visible salvo en Velas con nombre (siempre pastel)
+      
+ // $('fColor').hidden = r === 'nombre'; // Color visible salvo en Velas con nombre (siempre pastel)
   if ($('color').dataset.ref !== r) { $('color').innerHTML = REF[r].colores.map(c => '<option>' + c + '</option>').join(''); $('color').dataset.ref = r; } // Llena los colores solo cuando cambia la referencia
   $('fSimbolo').hidden = r !== 'unidos'; // Símbolo solo en Lejos pero Unidos
   const roja = r === 'deseos' && $('color').value === 'Roja'; // Es una vela roja de Deseos
