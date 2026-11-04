@@ -374,6 +374,8 @@ function actualizar() { // Ajusta el formulario a la referencia
   const roja = r === 'deseos' && $('color').value === 'Roja'; // Es una vela roja de Deseos
   $('fVinilo').hidden = r === 'unidos'; // Vinilo oculto solo en Lejos pero Unidos (siempre dorado)
   const opcV = roja ? ['Dorado'] : ['Dorado', 'Blanco']; // Vinilos permitidos: las rojas solo dorado
+  const Blanca = r === 'nombre' && $('color').value === 'blanco (sin mezclar)';    //yo las puse
+  $('fVinilo').hidden = r === 'unidos'; // Vinilo oculto solo en Lejos pero Unidos (siempre dorado)    yo las puse
   if ($('vinilo').options.length !== opcV.length) { $('vinilo').innerHTML = opcV.map(v => '<option>' + v + '</option>').join(''); } // Cambia las opciones solo si hace falta
   $('fNombres').hidden = r !== 'nombre'; // Nombres solo en Velas con nombre
   $('domicilio').textContent = recoge() ? 'Sin costo' : peso(costoDomicilio()); // Muestra el domicilio
