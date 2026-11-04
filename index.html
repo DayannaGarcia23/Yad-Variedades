@@ -253,7 +253,7 @@ dialog::backdrop{ background:rgba(41,41,41,.55); } /* Fondo oscurecido detrás *
 <div class="cant"><button type="button" id="menos" aria-label="Quitar una caja">−</button><input id="cajas" type="number" min="1" value="1" inputmode="numeric"><button type="button" id="mas" aria-label="Agregar una caja">+</button></div><!-- Selector de cajas -->
 <div id="fNombres"><!-- Solo Velas con nombre -->
 <label for="nombres">Nombres, uno por línea</label><!-- Etiqueta -->
-<textarea id="nombres" placeholder="Laura Valentina&#10;Camilo&#10;Familia"></textarea><!-- Lista de nombres -->
+<textarea id="nombres" placeholder="Laura&#10;Valentina&#10;Camilo&#10;Familia"></textarea><!-- Lista de nombres -->
 <p class="nota" id="cuenta"></p><!-- Contador de nombres -->
 </div>
 <label for="codigo">Código de descuento (opcional)</label><!-- Etiqueta -->
@@ -368,14 +368,12 @@ function actualizar() { // Ajusta el formulario a la referencia
   const r = $('ref').value; // Referencia actual
   $('nota').textContent = REF[r].nota; // Muestra la ayuda
       
- // $('fColor').hidden = r === 'nombre'; // Color visible salvo en Velas con nombre (siempre pastel)
+  $('fVinilo').hidden = r === 'nombre'; // visible salvo en Velas con nombre (siempre pastel)
   if ($('color').dataset.ref !== r) { $('color').innerHTML = REF[r].colores.map(c => '<option>' + c + '</option>').join(''); $('color').dataset.ref = r; } // Llena los colores solo cuando cambia la referencia
   $('fSimbolo').hidden = r !== 'unidos'; // Símbolo solo en Lejos pero Unidos
   const roja = r === 'deseos' && $('color').value === 'Roja'; // Es una vela roja de Deseos
   $('fVinilo').hidden = r === 'unidos'; // Vinilo oculto solo en Lejos pero Unidos (siempre dorado)
   const opcV = roja ? ['Dorado'] : ['Dorado', 'Blanco']; // Vinilos permitidos: las rojas solo dorado
-  const Blanca = r === 'nombre' && $('color').value === 'blanco (sin mezclar)';    //yo las puse
-  $('fVinilo').hidden = r === 'unidos'; // Vinilo oculto solo en Lejos pero Unidos (siempre dorado)    yo las puse
   if ($('vinilo').options.length !== opcV.length) { $('vinilo').innerHTML = opcV.map(v => '<option>' + v + '</option>').join(''); } // Cambia las opciones solo si hace falta
   $('fNombres').hidden = r !== 'nombre'; // Nombres solo en Velas con nombre
   $('domicilio').textContent = recoge() ? 'Sin costo' : peso(costoDomicilio()); // Muestra el domicilio
