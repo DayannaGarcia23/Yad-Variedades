@@ -5,34 +5,124 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><!-- Ajusta al celular -->
 <title>YAD Variedades · Pedidos</title><!-- Título de la pestaña -->
 <style>
-:root{ --marfil:#D9D7D0; --campo:#F1F0EB; --borde:#B8B6AF; --tinta:#292929;--caja-total:#C9CEC5; --boton:#555750; color-scheme:light; } /* Paleta de colores */
+:root{ --marfil:#D9D7D0; 
+      --campo:#F1F0EB; 
+      --borde:#B8B6AF; 
+      --tinta:#292929;
+      --caja-total:#C9CEC5;
+      --boton:#555750; 
+      color-scheme:light; } /* Paleta de colores */
 *{ box-sizing:border-box; } /* Las medidas incluyen los bordes */
-body{ margin:0; background:var(--marfil); color:var(--tinta); font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; line-height:1.5; padding-bottom:calc(96px + env(safe-area-inset-bottom,0px)); } /* Fondo, letra y espacio para la barra fija */
-header{ background:#F7F3EA; padding-top:env(safe-area-inset-top,0px); border-bottom:1px solid var(--borde); } /* Encabezado con el fondo del logo */
-.logo{ display:block; width:100%; max-width:760px; height:auto; margin:0 auto; } /* Logo a todo el ancho */
-.datos{ display:flex; flex-wrap:wrap; justify-content:center; gap:4px 18px; padding:2px 16px 16px; font-size:.8rem; color:var(--boton); } /* Datos del negocio bajo el logo */
-main{ max-width:560px; margin:0 auto; padding:18px 14px; display:grid; gap:16px; } /* Contenido en columna con espacio entre bloques */
-section{ background:var(--campo); border-radius:18px; padding:22px 18px; box-shadow:0 1px 2px rgba(41,41,41,.06),0 10px 26px rgba(41,41,41,.07); } /* Bloques tipo tarjeta */
-h2{ font-family:Georgia,'Times New Roman',serif; font-weight:400; font-size:1.35rem; margin:0 0 16px; display:flex; align-items:center; gap:10px; } /* Títulos de cada bloque */
-h2 i{ width:28px; height:28px; border-radius:50%; background:var(--boton); color:var(--campo); font:700 .85rem system-ui,sans-serif; display:grid; place-items:center; flex:none; } /* Número del bloque */
+body{ margin:0; background:var(--marfil); 
+     color:var(--tinta);
+     font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+     line-height:1.5; 
+     padding-bottom:calc(96px + env(safe-area-inset-bottom,0px)); } /* Fondo, letra y espacio para la barra fija */
+  
+header{ background:#F7F3EA;
+       padding-top:env(safe-area-inset-top,0px);
+       border-bottom:1px solid var(--borde); } /* Encabezado con el fondo del logo */
+  
+.logo{ display:block;
+      width:100%; max-width:760px; 
+      height:auto; margin:0 auto; } /* Logo a todo el ancho */
+  
+.datos{ display:flex; flex-wrap:wrap; 
+       justify-content:center; 
+       gap:4px 18px; 
+       padding:2px 16px 16px;
+       font-size:.8rem; color:var(--boton); } /* Datos del negocio bajo el logo */
+  
+main{ max-width:560px; margin:0 auto;
+     padding:18px 14px; 
+     display:grid; gap:16px; } /* Contenido en columna con espacio entre bloques */
+  
+section{ background:var(--campo); border-radius:18px;
+        padding:22px 18px;
+        box-shadow:0 1px 2px rgba(41,41,41,.06),0 10px 26px rgba(41,41,41,.07); } /* Bloques tipo tarjeta */
+  
+h2{ font-family:Georgia,'Times New Roman',serif; font-weight:400;
+   font-size:1.35rem; margin:0 0 16px; 
+   display:flex; align-items:center;
+   gap:10px; } /* Títulos de cada bloque */
+  
+h2 i{ width:28px; height:28px; 
+     border-radius:50%; 
+     background:var(--boton); 
+     color:var(--campo); font:700 .85rem system-ui,sans-serif; display:grid;
+     place-items:center; flex:none; } /* Número del bloque */
+  
 .modelos{ display:grid; gap:12px; } /* Lista de modelos */
-.modelo{ display:flex; gap:14px; align-items:center; width:100%; padding:10px; text-align:left; font:inherit; color:var(--tinta); background:none; border:1.5px solid var(--borde); border-radius:14px; cursor:pointer; } /* Tarjeta de modelo */
-.modelo img{ width:96px; height:74px; flex:none; object-fit:contain; background:var(--boton); border-radius:10px; padding:6px; } /* Foto del modelo */
+  
+.modelo{ display:flex; gap:14px; 
+        align-items:center; width:100%; 
+        padding:10px; text-align:left; 
+        font:inherit; color:var(--tinta); 
+        background:none; border:1.5px solid var(--borde); 
+        border-radius:14px; cursor:pointer; } /* Tarjeta de modelo */
+  
+.modelo img{ width:96px; height:74px; 
+            flex:none; object-fit:contain;
+            background:var(--boton); 
+            border-radius:10px; padding:6px; } /* Foto del modelo */
+  
 .modelo b{ display:block; font:400 1.08rem Georgia,'Times New Roman',serif; } /* Nombre del modelo */
-.modelo small{ display:block; font-size:.8rem; line-height:1.35; color:var(--boton); } /* Descripción corta */
-.modelo .p{ display:block; margin-top:3px; font-weight:700; font-size:.88rem; } /* Precio */
-.modelo.on{ background:var(--caja-total); border-color:var(--boton); box-shadow:0 0 0 1px var(--boton); } /* Modelo elegido */
-label{ display:block; margin:18px 0 2px; font-size:.74rem; letter-spacing:.07em; text-transform:uppercase; color:var(--boton); } /* Etiquetas pequeñas */
-select,input:not([type=hidden]),textarea{ width:100%; padding:9px 2px; font:inherit; font-size:1rem; color:var(--tinta); background:transparent; border:0; border-bottom:1.5px solid var(--borde); border-radius:0; outline:0; } /* Campos con línea inferior */
-textarea{ min-height:110px; padding:10px; border:1.5px solid var(--borde); border-radius:12px; } /* Lista de nombres */
+  
+.modelo small{ display:block; 
+              font-size:.8rem; line-height:1.35;
+              color:var(--boton); } /* Descripción corta */
+  
+.modelo .p{ display:block; margin-top:3px; 
+           font-weight:700; font-size:.88rem; } /* Precio */
+  
+.modelo.on{ background:var(--caja-total); 
+           border-color:var(--boton); 
+           box-shadow:0 0 0 1px var(--boton); } /* Modelo elegido */
+  
+label{ display:block; margin:18px 0 2px; 
+      font-size:.74rem; letter-spacing:.07em;
+      text-transform:uppercase; color:var(--boton); } /* Etiquetas pequeñas */
+  
+select,input:not([type=hidden]),textarea{ width:100%; padding:9px 2px; 
+                                         font:inherit; font-size:1rem; 
+                                         color:var(--tinta); 
+                                         background:transparent; 
+                                         border:0; border-bottom:1.5px solid var(--borde);
+                                         border-radius:0; outline:0; } /* Campos con línea inferior */
+  
+textarea{ min-height:110px; padding:10px;
+         border:1.5px solid var(--borde); 
+         border-radius:12px; } /* Lista de nombres */
+  
 select:focus,input:focus,textarea:focus{ border-color:var(--boton); } /* Campo activo */
+  
 ::placeholder{ color:var(--tinta); opacity:.45; } /* Texto de ejemplo */
-.nota{ margin:8px 0 0; font-size:.84rem; font-style:italic; color:var(--boton); } /* Textos de ayuda */
-.cant{ display:flex; align-items:center; gap:10px; margin-top:6px; } /* Selector de cajas */
-.cant button{ width:42px; height:42px; border-radius:50%; border:1.5px solid var(--borde); background:none; font-size:1.4rem; color:var(--tinta); cursor:pointer; } /* Botones más y menos */
-.cant input{ width:64px; text-align:center; font-size:1.3rem; font-weight:700; border:0; } /* Cantidad de cajas */
-.chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; } /* Opciones de entrega */
-.chip{ padding:10px 16px; font:inherit; font-size:.92rem; color:var(--tinta); background:none; border:1.5px solid var(--borde); border-radius:999px; cursor:pointer; } /* Opción de entrega */
+  
+.nota{ margin:8px 0 0; font-size:.84rem; 
+      font-style:italic; color:var(--boton); } /* Textos de ayuda */
+  
+.cant{ display:flex; align-items:center;
+      gap:10px; margin-top:6px; } /* Selector de cajas */
+  
+.cant button{ width:42px; height:42px;
+             border-radius:50%; 
+             border:1.5px solid var(--borde); 
+             background:none; font-size:1.4rem; 
+             color:var(--tinta); cursor:pointer; } /* Botones más y menos */
+  
+.cant input{ width:64px; text-align:center; 
+            font-size:1.3rem; 
+            font-weight:700; border:0; } /* Cantidad de cajas */
+  
+.chips{ display:flex; flex-wrap:wrap;
+       gap:8px; margin-top:8px; } /* Opciones de entrega */
+  
+.chip{ padding:10px 16px; 
+      font:inherit; font-size:.92rem;
+      color:var(--tinta); background:none;
+      border:1.5px solid var(--borde); 
+      border-radius:999px; cursor:pointer; } /* Opción de entrega */
+  
 .chip.on{ background:var(--boton); border-color:var(--boton); color:var(--campo); } /* Entrega elegida */
 .fila{ display:flex; gap:10px; align-items:center; } /* Campo y botón juntos */
 .total{ margin-top:6px; padding:14px 16px; background:var(--caja-total); border:1px solid var(--borde); border-radius:14px; } /* Cuadros de total y de pago */
