@@ -373,7 +373,7 @@ function actualizar() { // Ajusta el formulario a la referencia
         $('color').dataset.ref = r; } // Llena los colores solo cuando cambia la referencia
   $('fSimbolo').hidden = r !== 'unidos'; // Símbolo solo en Lejos pero Unidos     
   const soloDorado = (r === 'deseos' && $('color').value === 'Roja') ||
-                   (r === 'nombre' && $('color').value === 'Blanco');    
+                   (r === 'nombre' && $('color').value === 'Blanca (sin mezclar)');    
  // const roja = r === 'deseos' && $('color').value === 'Roja'; // Es una vela roja de Deseos
   $('fVinilo').hidden = r === 'unidos'; // Vinilo oculto solo en Lejos pero Unidos (siempre dorado)
   //const opcV = roja ? ['Dorado'] : ['Dorado', 'Blanco']; // Vinilos permitidos: las rojas solo dorado
